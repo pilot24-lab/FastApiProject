@@ -22,12 +22,14 @@ class NewBook(BaseModel):
     title: str
     author: str
 
-@app.post('/books')
+@app.post('/books', tags = ['Книги'], summary="Добавить новую книгу", description="Добавляет новую книгу в библиотеку")
 def create_book(new_book: NewBook):
-    book_id = len(books) + 1
-    book = {"id": book_id, "title": new_book.title, "author": new_book.author}
-    books.append(book)
-    return book
+    books.append({
+        'id': len(books) + 1,
+        'title' : new_book.title,
+        'author' : new_book.author
+    })
+    return {"success": True, "message": "Book added successfully"}
     
 if __name__ == "__main__":
     uvicorn.run('main:app', reload=True)
